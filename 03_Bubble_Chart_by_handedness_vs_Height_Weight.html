@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+          "use strict";
+          var margin = 50,
+              width = 1200 - margin,
+              height = 450 - margin;
+
+          var svg1 = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin/4)
+            .append('g')
+                .attr('class','chart');
+				
+			svg1.append('text')
+				.attr('x', 500)
+				.attr('y', 30)
+				.attr('text-anchor', 'middle')
+				.attr('class', 'chart-title')
+				.attr('font-size', 18)
+				.attr('font-weight','bold')
+   				.text('Exploratory: Baseball - Performance of players');
+				
+		  var svg2 = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin/4)
+            .append('g')
+                .attr('class','chart');
+				
+			svg2.append('text')
+				.attr('x', 500)
+				.attr('y', 30)
+				.attr('text-anchor', 'middle')
+				.attr('class', 'chart-title')
+				.attr('font-size', 18)
+				.attr('font-weight','bold')
+   				.text('Exploratory: Baseball - Performance of players');
+				
+      /*
+        Dimple.js Chart construction code
+      */
+
+          var myChart = new dimple.chart(svg1, data);
+          var x1 = myChart.addAxis("x", "height"); 
+          var y1 = myChart.addLogAxis("y", "weight");
+		  var z1 = myChart.addMeasureAxis("z", "HR");
+		  
+		  myChart.setBounds(200, 40, 500, 330)
+		  x1.title = "Height";
+		  x1.fontFamily = 'Garamond';
+		  x1.fontSize = "14px";
+		  y1.title = "Weight on Log10";
+          y1.fontSize = "14px";
+          y1.fontFamily = 'Garamond';		  
+		  
+		  
+		  myChart.addSeries(["height","weight","handedness"], dimple.plot.bubble, [x1, y1, z1]);
+		  /*myChart.aggregate = dimple.aggregateMethod.HR;	  */
+		  /*var s =myChart.addSeries(["handedness"], dimple.plot.line, [x, y2]);
+		  s.lineMarkers = true;
+		  myChart.aggregate = dimple.aggregateMethod.avg;*/
+		  myChart.ease = "bounce";
+		  myChart.staggerDraw = true;
+          myChart.draw(1500);
+		  
+		  var myChart1 = new dimple.chart(svg2, data);
+          var x2 = myChart1.addLogAxis("x", "height"); 
+          var y2 = myChart1.addAxis("y", "weight");
+		  var z2 = myChart1.addMeasureAxis("z", "HR");
+		  
+		  myChart1.setBounds(200, 40, 500, 330)
+		  x2.title = "Height on Log10";
+		  x2.fontFamily = 'Garamond';
+		  x2.fontSize = "14px";
+		  y2.title = "Weight";
+          y2.fontSize = "14px";
+          y2.fontFamily = 'Garamond';
+		  y2.ticks = 50;	
+		  /*y2.tickFormat = ',50'		  */
+		  
+		  
+		  myChart1.addSeries(["height","weight","handedness"], dimple.plot.bubble, [x2, y2, z2]);
+		  /*myChart.aggregate = dimple.aggregateMethod.HR;	  */
+		  /*var s =myChart.addSeries(["handedness"], dimple.plot.line, [x, y2]);
+		  s.lineMarkers = true;
+		  myChart.aggregate = dimple.aggregateMethod.avg;*/
+		  myChart1.ease = "bounce";
+		  myChart1.staggerDraw = true;
+          myChart1.draw(1500);
+		  
+        };
+    </script>
+</head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the CSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data.csv", draw);
+  </script>
+</body>
+</html>

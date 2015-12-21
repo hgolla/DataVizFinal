@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+          "use strict";
+          var margin = 50,
+              width = 1200 - margin,
+              height = 600 - margin;
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+				
+			svg.append('text')
+				.attr('x', 500)
+				.attr('y', 30)
+				.attr('text-anchor', 'middle')
+				.attr('class', 'chart-title')
+				.attr('font-size', 18)
+				.attr('font-weight','bold')
+   				.text('Exploratory: Baseball - Performance by Handedness');
+				
+      /*
+        Dimple.js Chart construction code
+      */
+
+          var myChart = new dimple.chart(svg, data);
+          var x = myChart.addCategoryAxis("x", "handedness"); 
+          var y1 = myChart.addMeasureAxis("y", "avg");
+		  /*var y2 = myChart.addMeasureAxis("y", "average");*/
+		  
+		  /*y1.overrideMax = 0.3;*/
+		  x.title = "Handedness";
+		  x.fontFamily = 'Garamond';
+		  x.fontSize = "14px";
+		  /*y1.title = "Total Home Runs";
+          y1.fontSize = "14px";
+          y1.fontFamily = 'Garamond';
+		  y1.ticks=8;*/
+		  y1.title = "Average Home Runs";
+          y1.fontSize = "14px";
+          y1.fontFamily = 'Garamond';
+		  y1.ticks=5;
+
+		  y1.tickFormat = ',.003f';
+		  y1.overrideMin = 0
+    	  y1.overrideMax = 0.300;
+		  
+          /*myChart.addSeries(["handedness"], dimple.plot.bar);
+		  myChart.aggregate = dimple.aggregateMethod.HR;	  */
+		  var mySeries = myChart.addSeries( ["handedness"], dimple.plot.bar, [x,y1]);
+	  	  mySeries.aggregate = dimple.aggregateMethod.avg;
+		  myChart.ease = "bounce";
+		  myChart.staggerDraw = true;
+          myChart.draw(1500);
+		  
+        };
+    </script>
+</head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the CSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data2.csv", draw);
+  </script>
+</body>
+</html>

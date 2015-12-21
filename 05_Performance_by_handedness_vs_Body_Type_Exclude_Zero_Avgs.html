@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js"></script>
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+		 "use strict";
+          var margin = 50,
+              width = 1200 - margin,
+              height = 450 - margin/2;
+
+          var svg1 = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin/4)
+            .append('g')
+                .attr('class','chart');
+				
+			svg1.append('text')
+				.attr('x', 450)
+				.attr('y', 30)
+				.attr('text-anchor', 'middle')
+				.attr('class', 'chart-title')
+				.attr('font-size', 18)
+				.attr('font-weight','bold')
+   				.text('Baseball - Performance of players : Handedness vs. Body type');
+				
+      /*
+        Dimple.js Chart construction code
+      */
+
+          var myChart = new dimple.chart(svg1, data);
+          var x1 = myChart.addCategoryAxis("x", ["handedness", "bodytype"]); 
+          var y1 = myChart.addMeasureAxis("y", "HR");
+		  
+		  myChart.setBounds(200, 60, 600, 330)
+		  x1.title = "Handedness";
+		  x1.fontFamily = 'Garamond';
+		  x1.fontSize = "14px";
+		  y1.title = "Body type";
+          y1.fontSize = "14px";
+          y1.fontFamily = 'Garamond';
+		  y1.overrideMax = 0.3;
+		  y1.timeInterval = 0.1;
+		  x1.title = "Handedness";
+		  y1.title = "Average Homeruns";
+		  
+		  x1.fontSize = "14px";
+          y1.fontSize = "14px";
+          x1.fontFamily = 'Garamond';
+          y1.fontFamily = 'Garamond';
+		  
+		  y1.tickFormat = ',.003f';
+		  y1.overrideMin = 0
+    	  y1.overrideMax = 100;
+		  
+		 var avg = myChart.addSeries("bodytype", dimple.plot.bar,[x1, y1]);
+         avg.aggregate = dimple.aggregateMethod.avg;
+		 myChart.addLegend(430, 70, 650, 230, "right");
+		 myChart.draw();		  
+		  
+		 myChart.ease = "bounce";
+		 myChart.staggerDraw = true;
+         myChart.draw(1500);
+	  
+          "use strict";
+          var margin = 50,
+              width = 1200 - margin,
+              height = 600 - margin;
+
+          var svg2 = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin/4)
+            .append('g')
+                .attr('class','chart');
+				
+      /*
+        Dimple.js Chart construction code
+      */
+
+          var myChart = new dimple.chart(svg2, data);
+          var x1 = myChart.addCategoryAxis("x", ["handedness", "bodytype"]); 
+          var y1 = myChart.addMeasureAxis("y", "avg");
+		  
+		  myChart.setBounds(200, 60, 600, 330)
+		  x1.title = "Handedness";
+		  x1.fontFamily = 'Garamond';
+		  x1.fontSize = "14px";
+		  y1.title = "Body type";
+          y1.fontSize = "14px";
+          y1.fontFamily = 'Garamond';
+		  y1.overrideMax = 0.3;
+		  y1.timeInterval = 0.1;
+		  x1.title = "Handedness";
+		  y1.title = "Batting average";
+		  
+		  x1.fontSize = "14px";
+          y1.fontSize = "14px";
+          x1.fontFamily = 'Garamond';
+          y1.fontFamily = 'Garamond';
+		  
+		  y1.tickFormat = ',.003f';
+		  y1.overrideMin = 0
+    	  y1.overrideMax = 0.300;
+		  
+		 var avg = myChart.addSeries("bodytype", dimple.plot.bar,[x1, y1]);
+         avg.aggregate = dimple.aggregateMethod.avg;
+		 myChart.addLegend(430, 70, 650, 230, "right");
+		 myChart.draw();		  
+		  
+		 myChart.ease = "bounce";
+		 myChart.staggerDraw = true;
+         myChart.draw(1500);
+		  
+        };
+    </script>
+</head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the CSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data2.csv", draw);
+  </script>
+</body>
+</html>
